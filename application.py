@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for
 import pickle
 import numpy as np
+import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import warnings
 from sklearn.exceptions import InconsistentVersionWarning
@@ -39,10 +40,13 @@ def predict():
         DiabetesPedigreeFunction = float(request.form['DiabetesPedigreeFunction'])
         Age = int(request.form['Age'])
 
-        # Create numpy array with correct shape
-        new_data = np.array([[Pregnancies, Glucose, BloodPressure, 
-                            SkinThickness, Insulin, BMI, 
-                            DiabetesPedigreeFunction, Age]])
+        # Create dataframe with feature names
+        new_data = pd.DataFrame([[Pregnancies, Glucose, BloodPressure, 
+                               SkinThickness, Insulin, BMI, 
+                               DiabetesPedigreeFunction, Age]],
+                             columns=['Pregnancies', 'Glucose', 'BloodPressure',
+                                     'SkinThickness', 'Insulin', 'BMI',
+                                     'DiabetesPedigreeFunction', 'Age'])
         
         # Scale and predict
         new_data = scaler.transform(new_data)
